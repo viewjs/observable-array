@@ -110,10 +110,10 @@ Collection.prototype.indexOf = function(item){
   return indexof(this.array, item);
 };
 
-Collection.prototype.refresh = function(array){
+Collection.prototype.reset = function(array){
   var prev = this.array;
   this.array = array;
-  this.emit('refresh', array, prev);
+  this.emit('reset', array, prev);
 };
 
 Collection.prototype.toArray = function(){
