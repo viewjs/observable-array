@@ -66,5 +66,19 @@ describe('collection', function(){
       assert(2 === calls.length);
       assert(5 === calls[0].i);
     });
+
+    it('#shift', function(){
+      var calls = [];
+      var items = collection();
+      items
+        .on('remove', function(items, startIndex){
+          calls.push({ items: items, i: startIndex });
+        });
+      items.push(1, 2, 3, 4, 5, 6);
+      items.shift();
+      items.shift();
+      assert(2 === calls.length);
+      assert(0 === calls[0].i);
+    });
   });
 });

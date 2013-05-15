@@ -61,8 +61,12 @@ Collection.prototype.pop = function(){
 };
 
 Collection.prototype.shift = function(){
-  this.apply('shift', arguments);
+  var startIndex = this.array.length;
+  var result = this.apply('shift', arguments);
   this.length = this.array.length;
+  if (this.hasListeners('remove'))
+    this.emit('remove', [result], 0);
+  return result;
 };
 
 Collection.prototype.unshift = function(){
