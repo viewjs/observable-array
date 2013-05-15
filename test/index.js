@@ -2,7 +2,10 @@ var collection = 'undefined' == typeof window
   ? require('..')
   : require('tower-collection'); // how to do this better?
 
-var assert = require('assert');
+var assert = 'undefined' == typeof window
+  ? require('assert')
+  : require('component-assert');
+  
 var query = require('tower-query');
 var memory = require('tower-memory-adapter');
 

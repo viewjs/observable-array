@@ -4,9 +4,9 @@
   "main": "./index.js",
   "dependencies": {
     "tower-emitter": "*",
-    "tower-query": "*",
-    "indexof": "*",
-    "part-is-array": "*",
+    "tower-query": "*"
+  },
+  "devDependencies": {
     "tower-memory-adapter": "*"
   }
 }

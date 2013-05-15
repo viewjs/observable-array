@@ -5,8 +5,6 @@
 
 var Emitter = require('tower-emitter')
   , query = require('tower-query')
-  , indexof = require('indexof')
-  , isArray = require('part-is-array')
   , slice = [].slice;
 
 /**
@@ -100,26 +98,18 @@ Collection.prototype.splice = function(index, length){
   return removed;
 };
 
-// this one doesn't need to do anything.
-Collection.prototype.slice = function(index, length, item){
-  var result = this.apply('slice', arguments);
-  return result;
-};
-
 Collection.prototype.forEach = function(fn, binding){
   this.apply('forEach', arguments);
 };
 
-Collection.prototype.indexOf = function(obj){
-  return indexof(this.array, obj);
-};
-
 Collection.prototype.reverse = function(){
   this.apply('reverse', arguments);
+  this.emit('refresh');
 };
 
 Collection.prototype.sort = function(){
   this.apply('sort', arguments);
+  this.emit('refresh');
 };
 
 Collection.prototype.toArray = function(){
