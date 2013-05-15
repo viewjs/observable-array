@@ -1,5 +1,11 @@
 {
   "name": "tower-collection",
   "version": "0.0.1",
-  "main": "./index.js"
+  "main": "./index.js",
+  "dependencies": {
+    "tower-emitter": "*",
+    "tower-query": "*",
+    "indexof": "*",
+    "part-is-array": "*"
+  }
 }
