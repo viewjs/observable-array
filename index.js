@@ -4,6 +4,7 @@
  */
 
 var Emitter = require('tower-emitter')
+  , indexof = require('indexof')
   , slice = [].slice;
 
 /**
@@ -99,6 +100,14 @@ Collection.prototype.splice = function(index, length){
     this.emit('add', slice.call(arguments, 2), index);
   }
   return removed;
+};
+
+Collection.prototype.remove = function(item){
+  this.splice(this.indexOf(item), 1);
+};
+
+Collection.prototype.indexOf = function(item){
+  return indexof(this.array, item);
 };
 
 Collection.prototype.refresh = function(array){

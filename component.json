@@ -5,7 +5,9 @@
   "version": "0.0.1",
   "keywords": [],
   "dependencies": {
-    "tower/emitter": "*"
+    "tower/emitter": "*",
+    "part/is-array": "*",
+    "component/indexof": "*"
   },
   "development": {
     "timoxley/assert": "*",
