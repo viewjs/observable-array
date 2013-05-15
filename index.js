@@ -88,6 +88,12 @@ Collection.prototype.splice = function(index, length){
   return removed;
 };
 
+Collection.prototype.refresh = function(array){
+  var prev = this.array;
+  this.array = array;
+  this.emit('refresh', array, prev);
+};
+
 Collection.prototype.toArray = function(){
   return this.array;
 };

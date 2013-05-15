@@ -21,17 +21,6 @@ collection([]); // []
 
 ## API
 
-### query
-
-Perform a query against a `tower-adapter` and replace the existing array with the result.
-
-```js
-collection.query()
-  .select('todo')
-  .where('completed').eq(true)
-  .exec();
-```
-
 ### push
 
 ```js
@@ -68,42 +57,6 @@ Modify the original array.
 
 ```js
 collection.splice(1, 2, item);
-```
-
-### slice(index, length, item)
-
-Replace original array.
-
-```js
-collection.slice(1, 2, item);
-```
-
-### forEach(fn, binding)
-
-```js
-collection.forEach(function(item, i){
-  
-});
-```
-
-### indexOf
-
-```js
-collection.indexOf(item);
-```
-
-### reverse
-
-```js
-collection.reverse();
-```
-
-### sort
-
-```js
-collection.sort(function(a, b){
-  return a - b;
-});
 ```
 
 ### length
