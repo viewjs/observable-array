@@ -44,16 +44,20 @@ Emitter(Collection.prototype);
 
 Collection.prototype.push = function(){
   var startIndex = this.array.length;
-  this.apply('push', arguments);
+  var result = this.apply('push', arguments);
   this.length = this.array.length;
   if (this.hasListeners('add'))
     this.emit('add', this.array.slice(startIndex, this.length), startIndex);
-  return this;
+  return result;
 };
 
 Collection.prototype.pop = function(){
-  this.apply('pop', arguments);
+  var startIndex = this.array.length;
+  var result = this.apply('pop', arguments);
   this.length = this.array.length;
+  if (this.hasListeners('remove'))
+    this.emit('remove', [result], startIndex - 1);
+  return result;
 };
 
 Collection.prototype.shift = function(){
@@ -102,5 +106,5 @@ Collection.prototype.toArray = function(){
  */
 
 Collection.prototype.apply = function(method, args){
-  this.array[method].apply(this.array, args);
+  return this.array[method].apply(this.array, args);
 };

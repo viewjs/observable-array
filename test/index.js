@@ -51,6 +51,20 @@ describe('collection', function(){
       assert('1,2,3' === calls[1].items.join(','));
       assert(4 === calls[2].i);
       assert('1,2,3' === calls[2].items.join(','));
-    })
+    });
+
+    it('#pop', function(){
+      var calls = [];
+      var items = collection();
+      items
+        .on('remove', function(items, startIndex){
+          calls.push({ items: items, i: startIndex });
+        });
+      items.push(1, 2, 3, 4, 5, 6);
+      items.pop();
+      items.pop();
+      assert(2 === calls.length);
+      assert(5 === calls[0].i);
+    });
   });
 });
