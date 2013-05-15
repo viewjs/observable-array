@@ -13,6 +13,12 @@ var Emitter = require('tower-emitter')
 exports = module.exports = collection;
 
 /**
+ * Expose `collection` of collections.
+ */
+
+exports.collection = {};
+
+/**
  * Expose `Collection`.
  */
 
@@ -22,17 +28,24 @@ exports.Collection = Collection;
  * Instantiate a new `Collection`.
  */
 
-function collection(array) {
-  return new Collection(array);
+function collection(name, array) {
+  if ('string' !== typeof name)
+    return new Collection(name);
+
+  if (exports.collection[name] && !array)
+    return exports.collection[name];
+
+  return exports.collection[name] = new Collection(array, name);
 }
 
 /**
  * Instantiate a new `Collection`.
  */
 
-function Collection(array) {
+function Collection(array, name) {
   this.array = array || [];
   this.length = this.array.length;
+  if (name) this.name = name;
 }
 
 /**

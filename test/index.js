@@ -18,6 +18,11 @@ describe('collection', function(){
     assert(0 === items.toArray().length);
   });
 
+  it('should support named collections', function(){
+    var todos = collection('todos', [ { title: 'foo' } ]);
+    assert(todos === collection('todos'));
+  });
+
   it('#push', function(){
     var items = collection();
     items.push(1);
