@@ -80,5 +80,39 @@ describe('collection', function(){
       assert(2 === calls.length);
       assert(0 === calls[0].i);
     });
+
+    it('#splice', function(){
+      var calls = [];
+      var items = collection();
+      items.push(1, 2, 3, 4, 5, 6);
+      items
+        .on('add', function(items, startIndex){
+          calls.push({ type: 'add', items: items, i: startIndex });
+        })
+        .on('remove', function(items, startIndex){
+          calls.push({ type: 'remove', items: items, i: startIndex });
+        });
+      
+      // remove
+      items.splice(2, 1);
+      assert('remove' === calls[0].type);
+      assert(1 === calls[0].items.length);
+      assert(3 === calls[0].items[0]); // removed `3`
+
+      // add
+      items.splice(2, 0, 3);
+      assert('add' === calls[1].type);
+      assert(1 === calls[1].items.length);
+      assert(3 === calls[1].items[0]); // removed `3`
+
+      // remove + add (replace)
+      items.splice(2, 2, 100, 200);
+      assert('remove' === calls[2].type);
+      assert('3,4' === calls[2].items.join(','));
+      assert(2 === calls[2].i);
+      assert('add' === calls[3].type);
+      assert('100,200' === calls[3].items.join(','));
+      assert(2 === calls[3].i);
+    });
   });
 });

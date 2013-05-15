@@ -5,7 +5,8 @@
 
 var Emitter = require('tower-emitter')
   , indexof = require('indexof')
-  , isArray = require('part-is-array');
+  , isArray = require('part-is-array')
+  , slice = [].slice;
 
 /**
  * Expose `collection`.
@@ -74,14 +75,24 @@ Collection.prototype.unshift = function(){
   this.length = this.array.length;
 };
 
-Collection.prototype.splice = function(index, length, item){
-  this.apply('splice', arguments);
+// XXX: maybe it emits a `replace` event if 
+// it both adds and removes at the same time.
+Collection.prototype.splice = function(index, length){
+  var startIndex = this.array.length;
+  var removed = this.apply('splice', arguments);
   this.length = this.array.length;
+  if (removed.length && this.hasListeners('remove')) {
+    this.emit('remove', removed, index);
+  }
+  if (arguments.length > 2 && this.hasListeners('add')) {
+    this.emit('add', slice.call(arguments, 2), index);
+  }
+  return removed;
 };
 
+// this one doesn't need to do anything.
 Collection.prototype.slice = function(index, length, item){
   var result = this.apply('slice', arguments);
-  this.length = this.array.length;
   return result;
 };
 
