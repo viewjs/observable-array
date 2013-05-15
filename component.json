@@ -10,7 +10,8 @@
   },
   "development": {
     "timoxley/assert": "*",
-    "visionmedia/mocha": "*"
+    "visionmedia/mocha": "*",
+    "tower/memory-adapter": "*"
   },
   "scripts": ["index.js"],
   "license": "MIT"

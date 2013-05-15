@@ -4,6 +4,7 @@
  */
 
 var Emitter = require('tower-emitter')
+  , query = require('tower-query')
   , indexof = require('indexof')
   , isArray = require('part-is-array')
   , slice = [].slice;
@@ -42,6 +43,15 @@ function Collection(array) {
  */
 
 Emitter(Collection.prototype);
+
+/**
+ * Query.
+ */
+
+Collection.prototype.query = function(){
+  this._query = query().use('memory').action('find');
+  return this._query;
+}
 
 Collection.prototype.push = function(){
   var startIndex = this.array.length;
@@ -100,8 +110,8 @@ Collection.prototype.forEach = function(fn, binding){
   this.apply('forEach', arguments);
 };
 
-Collection.prototype.indexOf = function(){
-  this.apply('indexOf', arguments);
+Collection.prototype.indexOf = function(obj){
+  return indexof(this.array, obj);
 };
 
 Collection.prototype.reverse = function(){

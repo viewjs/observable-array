@@ -6,6 +6,7 @@
     "tower-emitter": "*",
     "tower-query": "*",
     "indexof": "*",
-    "part-is-array": "*"
+    "part-is-array": "*",
+    "tower-memory-adapter": "*"
   }
 }
