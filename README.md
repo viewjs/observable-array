@@ -1,0 +1,121 @@
+# Tower Collection
+
+## Installation
+
+```bash
+$ component install tower/collection
+```
+
+## Example
+
+```js
+var collection = require('tower-collection');
+```
+
+Create a blank collection:
+
+```js
+collection(); // []
+collection([]); // []
+```
+
+## API
+
+### query
+
+Perform a query against a `tower-adapter` and replace the existing array with the result.
+
+```js
+collection.query()
+  .select('todo')
+  .where('completed').eq(true)
+  .exec();
+```
+
+### push
+
+```js
+collection.push(item);
+collection.push(item1, item2);
+```
+
+### pop
+
+```js
+collection.pop();
+```
+
+### shift
+
+Remove first item in array.
+
+```js
+collection.shift();
+```
+
+### unshift
+
+Add item(s) to beginning of array.
+
+```js
+collection.unshift(item);
+collection.unshift(item1, item2);
+```
+
+### splice(index, length, item)
+
+Modify the original array.
+
+```js
+collection.splice(1, 2, item);
+```
+
+### slice(index, length, item)
+
+Replace original array.
+
+```js
+collection.slice(1, 2, item);
+```
+
+### forEach(fn, binding)
+
+```js
+collection.forEach(function(item, i){
+  
+});
+```
+
+### indexOf
+
+```js
+collection.indexOf(item);
+```
+
+### reverse
+
+```js
+collection.reverse();
+```
+
+### sort
+
+```js
+collection.sort(function(a, b){
+  return a - b;
+});
+```
+
+### length
+
+```js
+collection.length;
+```
+
+## Notes
+
+The `collection` is only necessary to bind lists of data (such as queries) to the DOM. It just makes it easier to listen for changes to an array. In most other cases you can just use plain arrays and don't need the power of dirty tracking.
+
+## Licence
+
+MIT

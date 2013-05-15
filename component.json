@@ -1,0 +1,17 @@
+{
+  "name": "tower-collection",
+  "repo": "tower-collection",
+  "description": "Tower Collection component",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "tower/emitter": "*",
+    "tower/query": "*"
+  },
+  "development": {
+    "timoxley/assert": "*",
+    "visionmedia/mocha": "*"
+  },
+  "scripts": ["index.js"],
+  "license": "MIT"
+}
