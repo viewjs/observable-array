@@ -4,7 +4,6 @@
  */
 
 var Emitter = require('tower-emitter')
-  , query = require('tower-query')
   , slice = [].slice;
 
 /**
@@ -41,15 +40,6 @@ function Collection(array) {
  */
 
 Emitter(Collection.prototype);
-
-/**
- * Query.
- */
-
-Collection.prototype.query = function(){
-  this._query = query().use('memory').action('find');
-  return this._query;
-}
 
 Collection.prototype.push = function(){
   var startIndex = this.array.length;

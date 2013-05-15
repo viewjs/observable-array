@@ -5,13 +5,11 @@
   "version": "0.0.1",
   "keywords": [],
   "dependencies": {
-    "tower/emitter": "*",
-    "tower/query": "*"
+    "tower/emitter": "*"
   },
   "development": {
     "timoxley/assert": "*",
-    "visionmedia/mocha": "*",
-    "tower/memory-adapter": "*"
+    "visionmedia/mocha": "*"
   },
   "scripts": ["index.js"],
   "license": "MIT"

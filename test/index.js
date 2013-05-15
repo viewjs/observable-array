@@ -5,9 +5,6 @@ var collection = 'undefined' == typeof window
 var assert = 'undefined' == typeof window
   ? require('assert')
   : require('component-assert');
-  
-var query = require('tower-query');
-var memory = require('tower-memory-adapter');
 
 describe('collection', function(){
   it('should take an array', function(){
@@ -119,15 +116,5 @@ describe('collection', function(){
       assert('100,200' === calls[3].items.join(','));
       assert(2 === calls[3].i);
     });
-  });
-
-  it('should query', function(done){
-    memory.load('todo', [
-        { title: 'foo' }
-      , { title: 'bar' }
-      , { title: 'baz' }
-    ]);
-
-    collection().query().select('todo').exec();
   });
 });

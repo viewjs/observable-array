@@ -3,10 +3,6 @@
   "version": "0.0.1",
   "main": "./index.js",
   "dependencies": {
-    "tower-emitter": "*",
-    "tower-query": "*"
-  },
-  "devDependencies": {
-    "tower-memory-adapter": "*"
+    "tower-emitter": "*"
   }
 }
