@@ -88,20 +88,6 @@ Collection.prototype.splice = function(index, length){
   return removed;
 };
 
-Collection.prototype.forEach = function(fn, binding){
-  this.apply('forEach', arguments);
-};
-
-Collection.prototype.reverse = function(){
-  this.apply('reverse', arguments);
-  this.emit('refresh');
-};
-
-Collection.prototype.sort = function(){
-  this.apply('sort', arguments);
-  this.emit('refresh');
-};
-
 Collection.prototype.toArray = function(){
   return this.array;
 };
