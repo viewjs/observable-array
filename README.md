@@ -1,6 +1,6 @@
 # Tower Collection
 
-Arrays that automatically update the UI.
+Arrays that automatically update your UI.
 
 ## Installation
 
