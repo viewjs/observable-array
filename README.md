@@ -1,5 +1,7 @@
 # Tower Collection
 
+Arrays that automatically update the UI.
+
 ## Installation
 
 ```bash

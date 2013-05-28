@@ -3,9 +3,9 @@
  * Module dependencies.
  */
 
-var Emitter = require('tower-emitter')
-  , indexof = require('indexof')
-  , slice = [].slice;
+var Emitter = require('tower-emitter');
+var indexof = require('indexof');
+var slice = [].slice;
 
 /**
  * Expose `collection`.
