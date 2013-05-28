@@ -121,6 +121,26 @@ Collection.prototype.toArray = function(){
 };
 
 /**
+ * Subscribe to a query.
+ */
+
+Collection.prototype.subscribe = function(query){
+  var self = this;
+  query.subscribe(function(record){
+    switch (query.type) {
+      case 'create':
+        self.push(record);
+        break;
+      case 'update':
+        break;
+      case 'remove':
+        self.remove(record);
+        break;
+    }
+  });
+};
+
+/**
  * @api private
  */
 
