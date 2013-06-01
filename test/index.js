@@ -1,10 +1,11 @@
-var collection = 'undefined' == typeof window
-  ? require('..')
-  : require('tower-collection'); // how to do this better?
 
-var assert = 'undefined' == typeof window
-  ? require('assert')
-  : require('component-assert');
+if ('undefined' === typeof window) {
+  var collection = require('..');
+  var assert = require('assert');
+} else {
+  var collection = require('tower-collection');
+  var assert = require('timoxley-assert');
+}
 
 describe('collection', function(){
   it('should take an array', function(){

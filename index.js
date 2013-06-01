@@ -122,11 +122,17 @@ Collection.prototype.toArray = function(){
 
 /**
  * Subscribe to a query.
+ *
+ * @param {Query} query
+ * @return {Collection} self
  */
 
 Collection.prototype.subscribe = function(query){
   var self = this;
-  query.subscribe(function(record){
+  this.unsubscribe();
+  this._query = query;
+
+  function fn(record) {
     switch (query.type) {
       case 'create':
         self.push(record);
@@ -137,7 +143,25 @@ Collection.prototype.subscribe = function(query){
         self.remove(record);
         break;
     }
-  });
+  }
+
+  query.__collectionFn__ = fn;
+  query.subscribe(fn);
+  return this;
+};
+
+/**
+ * Unsubscribe from current query.
+ *
+ * @return {Collection} self
+ */
+
+Collection.prototype.unsubscribe = function(){
+  if (!this._query) return this;
+
+  this._query.unsubscribe(this._query.__collectionFn__);
+  delete this._query;
+  return this;
 };
 
 /**
