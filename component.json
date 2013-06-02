@@ -2,7 +2,7 @@
   "name": "tower-collection",
   "repo": "tower-collection",
   "description": "Tower Collection component",
-  "version": "0.5.0pre",
+  "version": "0.1.0pre",
   "keywords": [],
   "dependencies": {
     "tower/emitter": "*",
