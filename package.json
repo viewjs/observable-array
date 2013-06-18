@@ -1,10 +1,10 @@
 {
   "name": "tower-collection",
-  "version": "0.1.0pre",
+  "version": "0.1.0pre2",
   "main": "./index.js",
   "dependencies": {
     "tower-emitter": "~0.1.0pre",
     "part-is-array": "*",
-    "component-indexof": "*"
+    "indexof": "*"
   }
 }
