@@ -26,7 +26,12 @@ exports.collection = {};
 exports.Collection = Collection;
 
 /**
- * Instantiate a new `Collection`.
+ * Create or return an existing `Collection`.
+ *
+ * @param {String} name Collection name.
+ * @param {Array} array The data to store on the collection.
+ * @return {Collection} A Collection instance.
+ * @api public
  */
 
 function collection(name, array) {
@@ -40,7 +45,12 @@ function collection(name, array) {
 }
 
 /**
- * Instantiate a new `Collection`.
+ * Class representing a collection.
+ *
+ * @class
+ * @param {Array} array The data stored on the collection.
+ * @param {String} name The collection name.
+ * @api public
  */
 
 function Collection(array, name) {
@@ -55,6 +65,13 @@ function Collection(array, name) {
 
 Emitter(Collection.prototype);
 
+/**
+ * Add an element to the end of the collection.
+ *
+ * @return {Integer} The collection length.
+ * @api public
+ */
+
 Collection.prototype.push = function(){
   var startIndex = this.array.length;
   var result = this.apply('push', arguments);
@@ -63,6 +80,13 @@ Collection.prototype.push = function(){
     this.emit('add', this.array.slice(startIndex, this.length), startIndex);
   return result;
 };
+
+/**
+ * Remove the last element from the collection.
+ *
+ * @return {Integer} The collection length.
+ * @api public
+ */
 
 Collection.prototype.pop = function(){
   var startIndex = this.array.length;
@@ -73,6 +97,13 @@ Collection.prototype.pop = function(){
   return result;
 };
 
+/**
+ * Remove the first element from the collection.
+ *
+ * @return {Integer} The collection length.
+ * @api public
+ */
+
 Collection.prototype.shift = function(){
   var startIndex = this.array.length;
   var result = this.apply('shift', arguments);
@@ -82,10 +113,17 @@ Collection.prototype.shift = function(){
   return result;
 };
 
+/**
+ * Add an element to the beginning of the collection.
+ *
+ * @api public
+ */
+
 Collection.prototype.unshift = function(){
   this.apply('unshift', arguments);
   this.length = this.array.length;
 };
+
 
 // XXX: maybe it emits a `replace` event if 
 // it both adds and removes at the same time.
@@ -102,19 +140,48 @@ Collection.prototype.splice = function(index, length){
   return removed;
 };
 
+/**
+ * Remove a specific element from the collection.
+ * 
+ * @param {Object} item The element to remove.
+ * @api public
+ */
+
 Collection.prototype.remove = function(item){
   this.splice(this.indexOf(item), 1);
 };
 
+/**
+ * Return the index of a specific element in the collection.
+ * 
+ * @param {Object} item An element in the collection.
+ * @return {Integer} The element's index value or -1 if it doesn't exist in the collection.
+ * @api public
+ */
+
 Collection.prototype.indexOf = function(item){
   return indexof(this.array, item);
 };
+
+/**
+ * Reset the collection's data with a new set of data.
+ *
+ * @param {Array} array The data to store on the collection.
+ * @api public
+ */
 
 Collection.prototype.reset = function(array){
   var prev = this.array;
   this.array = array;
   this.emit('reset', array, prev);
 };
+
+/**
+ * Return the collection's data array.
+ *
+ * @return {Array} The collection's data array.
+ * @api public
+ */
 
 Collection.prototype.toArray = function(){
   return this.array;
@@ -123,8 +190,10 @@ Collection.prototype.toArray = function(){
 /**
  * Subscribe to a query.
  *
- * @param {Query} query
- * @return {Collection} self
+ * @chainable
+ * @param {Query} query A query object.
+ * @return {Collection}
+ * @api public
  */
 
 Collection.prototype.subscribe = function(query){
@@ -153,7 +222,9 @@ Collection.prototype.subscribe = function(query){
 /**
  * Unsubscribe from current query.
  *
- * @return {Collection} self
+ * @chainable
+ * @return {Collection}
+ * @api public
  */
 
 Collection.prototype.unsubscribe = function(){
@@ -165,6 +236,11 @@ Collection.prototype.unsubscribe = function(){
 };
 
 /**
+ * Apply an array function on the collection's data array.
+ * 
+ * @param {String} method An array method property. Example: 'shift', 'push'.
+ * @param {Array} args Method argument list.
+ * @return {Mixed} Whatever the array method returns.
  * @api private
  */
 
