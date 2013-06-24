@@ -1,11 +1,11 @@
 {
   "name": "tower-collection",
-  "repo": "tower-collection",
+  "repo": "tower/collection",
   "description": "Tower Collection component",
-  "version": "0.1.0pre",
+  "version": "0.1.0",
   "keywords": [],
   "dependencies": {
-    "tower/emitter": "*",
+    "tower/emitter": "0.1.0",
     "part/is-array": "*",
     "component/indexof": "*"
   },
