@@ -13,6 +13,11 @@
     "timoxley/assert": "*",
     "visionmedia/mocha": "*"
   },
-  "scripts": ["index.js"],
-  "license": "MIT"
+  "scripts": [
+    "index.js"
+  ],
+  "license": "MIT",
+  "dependents": {
+    "tower/list-directive": "0.1.0"
+  }
 }
