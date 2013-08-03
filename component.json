@@ -1,23 +1,17 @@
 {
-  "name": "tower-collection",
-  "repo": "tower/collection",
-  "description": "Tower Collection component",
-  "version": "0.1.0",
+  "name": "tower-observable-array",
+  "repo": "tower/observable-array",
+  "description": "Observable Array component",
+  "version": "0.0.2",
   "keywords": [],
+  "author": "Lance Pollard <lancejpollard@gmail.com>",
   "dependencies": {
-    "tower/emitter": "0.1.0",
-    "part/is-array": "*",
-    "component/indexof": "*"
+    "tower/emitter": "*"
   },
   "development": {
-    "timoxley/assert": "*",
-    "visionmedia/mocha": "*"
+    "visionmedia/mocha": "*",
+    "component/assert": "*"
   },
-  "scripts": [
-    "index.js"
-  ],
-  "license": "MIT",
-  "dependents": {
-    "tower/list-directive": "0.1.0"
-  }
+  "scripts": ["index.js"],
+  "license": "MIT"
 }

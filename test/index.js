@@ -1,50 +1,31 @@
+var observable = 'undefined' == typeof window
+  ? require('..')
+  : require('tower-observable-array'); // how to do this better?
 
-if ('undefined' === typeof window) {
-  var collection = require('..');
-  var assert = require('assert');
-} else {
-  var collection = require('tower-collection');
-  var assert = require('timoxley-assert');
-}
+var assert = require('assert');
 
-describe('collection', function(){
-  it('should take an array', function(){
-    var array = [1, 2, 3];
-    var items = collection(array);
-    assert(array === items.toArray());
-  });
-
-  it('should create empty array if no args passed', function(){
-    var items = collection();
-    assert(0 === items.toArray().length);
-  });
-
-  it('should support named collections', function(){
-    var todos = collection('todos', [ { title: 'foo' } ]);
-    assert(todos === collection('todos'));
-  });
-
+describe('observable-array', function(){
   it('#push', function(){
-    var items = collection();
+    var items = observable([]);
     items.push(1);
-    assert('1' === items.toArray().join(','));
+    assert('1' === items.join(','));
     assert(1 === items.length);
 
-    var items = collection();
+    var items = observable([]);
     items.push(1, 2, 3);
-    assert('1,2,3' === items.toArray().join(','));
+    assert('1,2,3' === items.join(','));
     assert(3 === items.length);
 
-    var items = collection();
+    var items = observable([]);
     items.push([1, 2, 3]);
-    assert('1,2,3' === items.toArray().join(','));
+    assert('1,2,3' === items.join(','));
     assert(1 === items.length);
   });
 
   describe('events', function(){
     it('#push', function(){
       var calls = [];
-      var items = collection();
+      var items = observable([]);
       items
         .on('add', function(items, startIndex){
           calls.push({ items: items, i: startIndex });
@@ -63,7 +44,7 @@ describe('collection', function(){
 
     it('#pop', function(){
       var calls = [];
-      var items = collection();
+      var items = observable([]);
       items
         .on('remove', function(items, startIndex){
           calls.push({ items: items, i: startIndex });
@@ -77,7 +58,7 @@ describe('collection', function(){
 
     it('#shift', function(){
       var calls = [];
-      var items = collection();
+      var items = observable([]);
       items
         .on('remove', function(items, startIndex){
           calls.push({ items: items, i: startIndex });
@@ -91,7 +72,7 @@ describe('collection', function(){
 
     it('#splice', function(){
       var calls = [];
-      var items = collection();
+      var items = observable([]);
       items.push(1, 2, 3, 4, 5, 6);
       items
         .on('add', function(items, startIndex){

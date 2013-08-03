@@ -1,14 +1,6 @@
 {
-  "name": "tower-collection",
-  "version": "0.1.0",
+  "name": "tower-observable-array",
+  "version": "0.0.2",
   "main": "./index.js",
-  "dependencies": {
-    "tower-emitter": "~0.1.0",
-    "part-is-array": "*",
-    "indexof": "*"
-  },
-  "repository": {
-    "type" : "git",
-    "url" : "http://github.com/tower/collection.git"
-  }
+  "author": "Lance Pollard <lancejpollard@gmail.com>"
 }

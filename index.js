@@ -4,66 +4,86 @@
  */
 
 var Emitter = require('tower-emitter');
-var indexof = require('indexof');
-var slice = [].slice;
-
-/**
- * Expose `collection`.
- */
-
-exports = module.exports = collection;
-
-/**
- * Expose `collection` of collections.
- */
-
-exports.collection = {};
-
-/**
- * Expose `Collection`.
- */
-
-exports.Collection = Collection;
-
-/**
- * Create or return an existing `Collection`.
- *
- * @param {String} name Collection name.
- * @param {Array} array The data to store on the collection.
- * @return {Collection} A Collection instance.
- * @api public
- */
-
-function collection(name, array) {
-  if ('string' !== typeof name)
-    return new Collection(name);
-
-  if (exports.collection[name] && !array)
-    return exports.collection[name];
-
-  return exports.collection[name] = new Collection(array, name);
-}
-
-/**
- * Class representing a collection.
- *
- * @class
- * @param {Array} array The data stored on the collection.
- * @param {String} name The collection name.
- * @api public
- */
-
-function Collection(array, name) {
-  this.array = array || [];
-  this.length = this.array.length;
-  if (name) this.name = name;
-}
+var defineProperty = Object.defineProperty || function(obj, prop, desc){
+  obj[prop] = desc.value;
+};
+var slice = Array.prototype.slice;
+var proto = [];
 
 /**
  * Mixin `Emitter`.
  */
 
-Emitter(Collection.prototype);
+Emitter(proto);
+
+/**
+ * Define methods.
+ */
+
+var methods = {
+  pop: pop,
+  push: push, 
+  reverse: reverse,
+  shift: shift,
+  sort: sort,
+  splice: splice,
+  unshift: unshift
+};
+
+for (var method in methods)
+  defineMethod(method, methods[method]);
+
+function defineMethod(name, fn) {
+  defineProperty(proto, name, { value: fn });
+}
+
+// if a modern browser
+if ({}.__proto__) {
+  var wrap = function wrap(arr) {
+    if (arr.__observable__) return arr;
+    arr.__observable__ = true;
+    arr.__proto__ = proto;
+    return arr;
+  }
+
+  var unwrap = function unwrap(arr) {
+    delete arr.__observable__;
+    arr.__proto__ = Array.prototype;
+    return arr;
+  }
+} else {
+  var wrap = function wrap(arr) {
+    if (arr.__observable__) return arr;
+    arr.__observable__ = true;
+    for (var name in methods) {
+      defineProperty(arr, name, {
+        value: proto[name],
+        configurable: true
+      });
+    }
+    return arr;
+  };
+
+  var unwrap = function unwrap(arr) {
+    for (var name in methods) {
+      delete arr[name];
+    }
+    delete arr.__observable__;
+    return arr;
+  };
+}
+
+/**
+ * Expose `wrap`.
+ */
+
+exports = module.exports = wrap;
+
+/**
+ * Expose `unwrap`.
+ */
+
+exports.unwrap = unwrap;
 
 /**
  * Add an element to the end of the collection.
@@ -72,14 +92,13 @@ Emitter(Collection.prototype);
  * @api public
  */
 
-Collection.prototype.push = function(){
-  var startIndex = this.array.length;
-  var result = this.apply('push', arguments);
-  this.length = this.array.length;
+function push() {
+  var startIndex = this.length;
+  var result = Array.prototype.push.apply(this, arguments);
   if (this.hasListeners('add'))
-    this.emit('add', this.array.slice(startIndex, this.length), startIndex);
+    this.emit('add', this.slice(startIndex, this.length), startIndex);
   return result;
-};
+}
 
 /**
  * Remove the last element from the collection.
@@ -88,14 +107,13 @@ Collection.prototype.push = function(){
  * @api public
  */
 
-Collection.prototype.pop = function(){
-  var startIndex = this.array.length;
-  var result = this.apply('pop', arguments);
-  this.length = this.array.length;
+function pop() {
+  var startIndex = this.length;
+  var result = Array.prototype.pop.apply(this, arguments);
   if (this.hasListeners('remove'))
     this.emit('remove', [result], startIndex - 1);
   return result;
-};
+}
 
 /**
  * Remove the first element from the collection.
@@ -104,14 +122,13 @@ Collection.prototype.pop = function(){
  * @api public
  */
 
-Collection.prototype.shift = function(){
-  var startIndex = this.array.length;
-  var result = this.apply('shift', arguments);
-  this.length = this.array.length;
+function shift() {
+  var startIndex = this.length;
+  var result = Array.prototype.shift.apply(this, arguments);
   if (this.hasListeners('remove'))
     this.emit('remove', [result], 0);
   return result;
-};
+}
 
 /**
  * Add an element to the beginning of the collection.
@@ -119,18 +136,20 @@ Collection.prototype.shift = function(){
  * @api public
  */
 
-Collection.prototype.unshift = function(){
-  this.apply('unshift', arguments);
-  this.length = this.array.length;
-};
-
+function unshift() {
+  var length = this.length;
+  var result = Array.prototype.unshift.apply(this, arguments);
+  if (this.hasListeners('add'))
+    this.emit('add', this.slice(0, this.length - length), 0);
+  return result;
+}
 
 // XXX: maybe it emits a `replace` event if 
 // it both adds and removes at the same time.
-Collection.prototype.splice = function(index, length){
-  var startIndex = this.array.length;
-  var removed = this.apply('splice', arguments);
-  this.length = this.array.length;
+function splice(index, length) {
+  var startIndex = this.length;
+  var removed = Array.prototype.splice.apply(this, arguments);
+  this.length = this.length;
   if (removed.length && this.hasListeners('remove')) {
     this.emit('remove', removed, index);
   }
@@ -138,112 +157,42 @@ Collection.prototype.splice = function(index, length){
     this.emit('add', slice.call(arguments, 2), index);
   }
   return removed;
-};
+}
 
-/**
- * Remove a specific element from the collection.
- * 
- * @param {Object} item The element to remove.
- * @api public
- */
+function reverse() {
+  var result = Array.prototype.reverse.apply(this, arguments);
+  this.emit('sort');
+  return result;
+}
 
-Collection.prototype.remove = function(item){
-  this.splice(this.indexOf(item), 1);
-};
-
-/**
- * Return the index of a specific element in the collection.
- * 
- * @param {Object} item An element in the collection.
- * @return {Integer} The element's index value or -1 if it doesn't exist in the collection.
- * @api public
- */
-
-Collection.prototype.indexOf = function(item){
-  return indexof(this.array, item);
-};
+function sort() {
+  var result = Array.prototype.sort.apply(this, arguments);
+  this.emit('sort');
+  return result;
+}
 
 /**
  * Reset the collection's data with a new set of data.
  *
- * @param {Array} array The data to store on the collection.
+ * @param {Array} arr The data to store on the collection.
  * @api public
  */
 
-Collection.prototype.reset = function(array){
-  var prev = this.array;
-  this.array = array;
-  this.emit('reset', array, prev);
-};
-
-/**
- * Return the collection's data array.
- *
- * @return {Array} The collection's data array.
- * @api public
- */
-
-Collection.prototype.toArray = function(){
-  return this.array;
-};
-
-/**
- * Subscribe to a query.
- *
- * @chainable
- * @param {Query} query A query object.
- * @return {Collection}
- * @api public
- */
-
-Collection.prototype.subscribe = function(query){
-  var self = this;
-  this.unsubscribe();
-  this._query = query;
-
-  function fn(record) {
-    switch (query.type) {
-      case 'create':
-        self.push(record);
-        break;
-      case 'update':
-        break;
-      case 'remove':
-        self.remove(record);
-        break;
-    }
-  }
-
-  query.__collectionFn__ = fn;
-  query.subscribe(fn);
-  return this;
-};
-
-/**
- * Unsubscribe from current query.
- *
- * @chainable
- * @return {Collection}
- * @api public
- */
-
-Collection.prototype.unsubscribe = function(){
-  if (!this._query) return this;
-
-  this._query.unsubscribe(this._query.__collectionFn__);
-  delete this._query;
-  return this;
-};
+function reset(arr) {
+  this.emit('reset', arr);
+}
 
 /**
  * Apply an array function on the collection's data array.
  * 
- * @param {String} method An array method property. Example: 'shift', 'push'.
+ * @param {String} name An array method property. Example: 'shift', 'push'.
  * @param {Array} args Method argument list.
  * @return {Mixed} Whatever the array method returns.
  * @api private
  */
 
-Collection.prototype.apply = function(method, args){
-  return this.array[method].apply(this.array, args);
+function apply(name, args) {
+  //this.__updating__ = true;
+  return Array.prototype[name].apply(this, args);
+  //delete this.__updating__;
 };

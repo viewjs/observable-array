@@ -1,75 +1,36 @@
-# Tower Collection
+# Observable Array
 
-Arrays that automatically update your UI.
+Makes any array an event emitter.
 
 ## Installation
 
+node.js:
+
 ```bash
-$ component install tower/collection
+npm install tower-observable-array
+```
+
+browser:
+
+```bash
+component install tower/observable-array
 ```
 
 ## Example
 
 ```js
-var collection = require('tower-collection');
-```
-
-Create a blank collection:
-
-```js
-collection(); // []
-collection([]); // []
-```
-
-## API
-
-### push
-
-```js
-collection.push(item);
-collection.push(item1, item2);
-```
-
-### pop
-
-```js
-collection.pop();
-```
-
-### shift
-
-Remove first item in array.
-
-```js
-collection.shift();
-```
-
-### unshift
-
-Add item(s) to beginning of array.
-
-```js
-collection.unshift(item);
-collection.unshift(item1, item2);
-```
-
-### splice(index, length, item)
-
-Modify the original array.
-
-```js
-collection.splice(1, 2, item);
-```
-
-### length
-
-```js
-collection.length;
+var observable = require('tower-observable-array');
+var arr = [ 'a', 'b', 'c' ];
+observable(arr);
+arr.on('add', function(){
+  assert('d' === arr[3]);
+});
+arr.push('d');
 ```
 
 ## Notes
 
-The `collection` is only necessary to bind lists of data (such as queries) to the DOM. It just makes it easier to listen for changes to an array. In most other cases you can just use plain arrays and don't need the power of dirty tracking.
+- http://perfectionkills.com/how-ecmascript-5-still-does-not-allow-to-subclass-an-array/#wrappers_prototype_chain_injection
 
 ## Licence
 
