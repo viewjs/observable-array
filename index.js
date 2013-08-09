@@ -4,9 +4,23 @@
  */
 
 var Emitter = require('tower-emitter');
-var defineProperty = Object.defineProperty || function(obj, prop, desc){
-  obj[prop] = desc.value;
-};
+
+/**
+ * Define property method.
+ */
+
+var defineProperty;
+
+try {
+  // IE8 has it but it only works on DOM elements.
+  Object.defineProperty({}, 'foo', { value: true });
+  defineProperty = Object.defineProperty;
+} catch (err) {
+  defineProperty = function(obj, prop, desc){
+    obj[prop] = desc.value;
+  };
+}
+
 var slice = Array.prototype.slice;
 var proto = [];
 
