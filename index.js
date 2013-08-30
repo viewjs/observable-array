@@ -25,12 +25,6 @@ var slice = Array.prototype.slice;
 var proto = [];
 
 /**
- * Mixin `Emitter`.
- */
-
-Emitter(proto);
-
-/**
  * Define methods.
  */
 
@@ -43,6 +37,12 @@ var methods = {
   splice: splice,
   unshift: unshift
 };
+
+/**
+ * Mixin `Emitter`.
+ */
+
+Emitter(methods);
 
 for (var method in methods)
   defineMethod(method, methods[method]);
